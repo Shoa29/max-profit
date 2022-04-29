@@ -9,7 +9,7 @@ I have created a python script to determine the best time to buy and sell Gold.
 - pytest
 
 # Running through Docker
-- Use the following command to build an image of the script
+- Use the following command to build an image of the script - 
 docker build -t maxprofit .
 
 - Next to run the script:-
