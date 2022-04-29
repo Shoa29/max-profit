@@ -1,14 +1,13 @@
 import requests
 from typing import List
 import datetime
+from params import AMOUNT, ENDPOINT
 
 #global variables
 min_price = 999999
 max_profit = -1
 buy_date = ""
 sell_date = ""
-ENDPOINT = "http://api.nbp.pl/api/cenyzlota/"
-AMOUNT = 135000
 
 def calcProfit(quotes: List)-> None:
     """
@@ -35,13 +34,13 @@ def calcProfit(quotes: List)-> None:
     return
 
 
-def getQuotes(start_date:str, end_date:str)-> None:
+def getQuotes(start_date:str, end_date:str)-> int:
     """
     Get request to the API
 
     :param start_date: starting date to get gold price quotes from
     :param end_date: ending date
-    :return: None
+    :return: status code of response
     """
     url = ENDPOINT + start_date + "/" + end_date
     try:
@@ -49,6 +48,7 @@ def getQuotes(start_date:str, end_date:str)-> None:
         calcProfit(res.json())
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
+    return res.status_code
 
 
 
@@ -61,9 +61,11 @@ if __name__ == '__main__':
         end_date = end_itr.strftime("%Y-%m-%d")
         getQuotes(start_date,end_date)
         end_itr += datetime.timedelta(days=365)
+
     sell_price = max_profit + min_price
     units = int(AMOUNT/min_price)
     max_profit = units*max_profit
+
     print(f'Best date to BUY: {buy_date}')
     print(f'Number of Units of Gold bought: {units} At PRICE: {min_price} USD')
     print(f'Best date to SELL: {sell_date} At PRICE: {sell_price} USD')
