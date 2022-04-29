@@ -40,12 +40,13 @@ def getQuotes(start_date:str, end_date:str)-> int:
 
     :param start_date: starting date to get gold price quotes from
     :param end_date: ending date
-    :return: status code of response
+    :return: res
     """
     url = ENDPOINT + start_date + "/" + end_date
     try:
         res = requests.get(url)
-        calcProfit(res.json())
+        r = res.json()
+        calcProfit(r)
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
     return res
@@ -53,6 +54,7 @@ def getQuotes(start_date:str, end_date:str)-> int:
 
 
 if __name__ == '__main__':
+
     today = datetime.datetime.today()
     end_itr = today - datetime.timedelta(days=1460)
     while end_itr <= today:
