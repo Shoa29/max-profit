@@ -9,12 +9,12 @@ max_profit = -1
 buy_date = ""
 sell_date = ""
 
-def calcProfit(quotes: List)-> None:
+def calcProfit(quotes: List):
     """
     Function to calculate dates to invest on to yield maximum profit
 
     :param quotes: list of daily gold price
-    :return: None
+    :return: min_price, max_profit, buy_date, sell_date
     """
     global min_price, max_profit, buy_date, sell_date
     if min_price > quotes[0]['cena']:
@@ -31,7 +31,7 @@ def calcProfit(quotes: List)-> None:
         if quotes[i]['cena'] < min_price:
             min_price = quotes[i]['cena']
             buy_date = quotes[i]['data']
-    return
+    return buy_date, sell_date
 
 
 def getQuotes(start_date:str, end_date:str)-> int:
@@ -48,7 +48,7 @@ def getQuotes(start_date:str, end_date:str)-> int:
         calcProfit(res.json())
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
-    return res.status_code
+    return res
 
 
 
